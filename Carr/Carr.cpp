@@ -14,32 +14,50 @@ public:
     Automobile(string mk = "Unknown", string mdl = "Model", string clr = "Color", int yr = 1990)
         : make(mk), model(mdl), color(clr), manufactureYear(yr) {}
 
-    void updateMake(string mk) {
-        make = mk;
+    // Setters with data validation
+    void updateMake(const string& mk) {
+        if (!mk.empty()) {
+            make = mk;
+        } else {
+            cout << "Invalid make. The make must not be empty." << endl;
+        }
     }
 
+    void updateModel(const string& mdl) {
+        if (!mdl.empty()) {
+            model = mdl;
+        } else {
+            cout << "Invalid model. The model must not be empty." << endl;
+        }
+    }
+
+    void updateColor(const string& clr) {
+        if (!clr.empty()) {
+            color = clr;
+        } else {
+            cout << "Invalid color. The color must not be empty." << endl;
+        }
+    }
+
+    void updateYear(int yr) {
+        if (yr > 1885) {  // Validating the year of manufacture (first car was made in 1886)
+            manufactureYear = yr;
+        } else {
+            cout << "Invalid year. The year must be later than 1885." << endl;
+        }
+    }
+
+    // Getters
     string fetchMake() const {
         return make;
-    }
-
-    void updateModel(string mdl) {
-        model = mdl;
     }
 
     string fetchModel() const {
         return model;
     }
 
-    void updateColor(string clr) {
-        color = clr;
-    }
-
     string fetchColor() const {
         return color;
-    }
-
-    void updateYear(int yr) {
-        manufactureYear = yr;
     }
 
     int fetchYear() const {
@@ -87,20 +105,25 @@ public:
 
         cout << "Enter Year: ";
         cin >> yr;
-        cin.ignore();  // To consume the newline character left in the input stream
         automobile->updateYear(yr);
+        
+        cin.ignore(); // Consuming the leftover newline character
     }
 };
 
 int main() {
+    // Initialize the Automobile object with default parameters
     Automobile myCar("Toyota", "Corolla", "Blue", 2020);
 
+    // Create a display object for the automobile
     AutomobileDisplay carDisplay(&myCar);
     carDisplay.displayDetails();
 
+    // Create a configurator object for the automobile
     AutomobileConfigurator carConfig(&myCar);
     carConfig.configure();
 
+    // Display the updated automobile details
     carDisplay.displayDetails();
 
     return 0;
