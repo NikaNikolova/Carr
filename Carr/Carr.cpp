@@ -1,118 +1,107 @@
 #include <iostream>
+#include <string>
+
 using namespace std;
 
-class Car {
-
-	string brand;
-	string model;
-	string color;
-	int year;
+class Automobile {
+private:
+    string make;
+    string model;
+    string color;
+    int manufactureYear;
 
 public:
+    Automobile(string mk = "Unknown", string mdl = "Model", string clr = "Color", int yr = 1990)
+        : make(mk), model(mdl), color(clr), manufactureYear(yr) {}
 
-	Car()
-	{
-		brand = "";
-		model = "";
-		color = "";
-		year = 2000;
-	}
+    void updateMake(string mk) {
+        make = mk;
+    }
 
-	Car(string b, string m, string c, int y) :brand(b), model(m), color(c), year(y) {};
+    string fetchMake() const {
+        return make;
+    }
 
-	void SetBrand(string b)
-	{
-		brand = b;
-	}
+    void updateModel(string mdl) {
+        model = mdl;
+    }
 
-	string GetBrand()
-	{
-		return brand;
-	}
+    string fetchModel() const {
+        return model;
+    }
 
-	void SetModel(string m)
-	{
-		model = m;
-	}
+    void updateColor(string clr) {
+        color = clr;
+    }
 
-	string GetModel()
-	{
-		return model;
-	}
+    string fetchColor() const {
+        return color;
+    }
 
-	void SetColor(string c)
-	{
-		color = c;
-	}
+    void updateYear(int yr) {
+        manufactureYear = yr;
+    }
 
-	string GetColor()
-	{
-		return color;
-	}
-
-	void SetYear(int y)
-	{
-		year = y;
-	}
-
-	int GetYear()
-	{
-		return year;
-	}
-
+    int fetchYear() const {
+        return manufactureYear;
+    }
 };
 
-class CarPrinter
-{
-	Car* car;
-public:
-	CarPrinter(Car* car) :car(car) {};
+class AutomobileDisplay {
+private:
+    const Automobile* automobile;
 
-	void PrintInfo()
-	{
-		cout << "Brand: " << car->GetBrand() << "\n" << "Model:" << car->GetModel() << "\n" << "Color:" << car->GetColor() << "\n" << "Year:" << car->GetYear() << "\n\n";
-	}
+public:
+    AutomobileDisplay(const Automobile* autoPtr) : automobile(autoPtr) {}
+
+    void displayDetails() const {
+        cout << "Make: " << automobile->fetchMake() << endl;
+        cout << "Model: " << automobile->fetchModel() << endl;
+        cout << "Color: " << automobile->fetchColor() << endl;
+        cout << "Year: " << automobile->fetchYear() << endl << endl;
+    }
 };
 
-class CarInputter {
-	Car* car;
+class AutomobileConfigurator {
+private:
+    Automobile* automobile;
 
 public:
-	CarInputter(Car* car) :car(car) {};
+    AutomobileConfigurator(Automobile* autoPtr) : automobile(autoPtr) {}
 
-	void InputInfo() {
-		string brand, model, color;
-		int year;
+    void configure() {
+        string mk, mdl, clr;
+        int yr;
 
-		cout << "Enter brand: ";
-		cin >> brand;
-		car->SetBrand(brand);
+        cout << "Enter Make: ";
+        getline(cin, mk);
+        automobile->updateMake(mk);
 
-		cout << "Enter model: ";
-		cin >> model;
-		car->SetModel(model);
+        cout << "Enter Model: ";
+        getline(cin, mdl);
+        automobile->updateModel(mdl);
 
-		cout << "Enter color: ";
-		cin >> color;
-		car->SetColor(color);
+        cout << "Enter Color: ";
+        getline(cin, clr);
+        automobile->updateColor(clr);
 
-		cout << "Enter year: ";
-		cin >> year;
-		car->SetYear(year);
-	}
+        cout << "Enter Year: ";
+        cin >> yr;
+        cin.ignore();  // To consume the newline character left in the input stream
+        automobile->updateYear(yr);
+    }
 };
 
 int main() {
-	Car car("BMW", "X5", "black", 2019);
+    Automobile myCar("Toyota", "Corolla", "Blue", 2020);
 
-	CarPrinter carPrinter(&car);
-	carPrinter.PrintInfo();
+    AutomobileDisplay carDisplay(&myCar);
+    carDisplay.displayDetails();
 
-	CarInputter carInputter(&car);
-	carInputter.InputInfo();
+    AutomobileConfigurator carConfig(&myCar);
+    carConfig.configure();
 
-	carPrinter.PrintInfo();
+    carDisplay.displayDetails();
 
-
-	return 0;
+    return 0;
 }
